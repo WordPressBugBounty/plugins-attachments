@@ -645,8 +645,12 @@ if( !function_exists( 'attachments_magic_tags_processor' ) )
                 // we are dealing with a field
                 $field = explode( '_', $name );
 
-                if( isset( $field[1] ) )
-                    $value = $attachments_auto_append_ref->field( $field[1] );
+                $single_attachment = $attachments_auto_append_ref->get_single( $attachments_magic_tag_index - 1 );
+                $field_names = array_keys( get_object_vars ( $single_attachment->fields ) );
+                $field_index = $field[1] - 1;
+
+                if( isset( $field_names[ $field_index ] ) )
+                    $value = $attachments_auto_append_ref->field( $field_names[ $field_index ] );
             }
         }
 
@@ -828,9 +832,9 @@ EOD;
                 if( is_array( $existing_instances ) && count( $existing_instances ) > 0 )
                 {
                     $post_attachments = array();
-                    foreach( $existing_instances as $instance_name => $instance_attachments )
+                    foreach( $existing_instances as $existing_instance_name => $instance_attachments )
                     {
-                        if( $instance_name == $instance_name )
+                        if( $instance_name == $existing_instance_name )
                         {
                             $post_attachments[$instance_name] = array();
                             $converted_attachment = array();
